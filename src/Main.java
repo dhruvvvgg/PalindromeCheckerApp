@@ -1,4 +1,6 @@
 import java.util.Stack;
+import java.util.Queue;
+import java.util.LinkedList;
 
 public class Main {
 
@@ -78,16 +80,46 @@ public class Main {
 
         Stack<Character> stack = new Stack<>();
 
-        // Push characters into stack
         for (int i = 0; i < input.length(); i++) {
             stack.push(input.charAt(i));
         }
 
         boolean isPalindrome = true;
 
-        // Pop and compare
         for (int i = 0; i < input.length(); i++) {
             if (input.charAt(i) != stack.pop()) {
+                isPalindrome = false;
+                break;
+            }
+        }
+
+        if (isPalindrome) {
+            System.out.println(input + " is a Palindrome.");
+        } else {
+            System.out.println(input + " is NOT a Palindrome.");
+        }
+
+        System.out.println();
+    }
+
+    // ===== UC6: Queue vs Stack (FIFO vs LIFO) =====
+    public static void checkUsingQueueAndStack(String input) {
+
+        Queue<Character> queue = new LinkedList<>();
+        Stack<Character> stack = new Stack<>();
+
+        for (int i = 0; i < input.length(); i++) {
+            queue.add(input.charAt(i));   // Enqueue (FIFO)
+            stack.push(input.charAt(i)); // Push (LIFO)
+        }
+
+        boolean isPalindrome = true;
+
+        while (!queue.isEmpty()) {
+            char fromQueue = queue.remove(); // Dequeue
+            char fromStack = stack.pop();    // Pop
+
+            if (fromQueue != fromStack) {
                 isPalindrome = false;
                 break;
             }
@@ -110,6 +142,7 @@ public class Main {
         reverseAndCheck("racecar");         // UC3
         checkUsingCharArray("level");       // UC4
         checkUsingStack("radar");           // UC5
+        checkUsingQueueAndStack("madam");   // UC6
 
         System.out.println("Program Ended.");
     }
