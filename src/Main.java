@@ -31,13 +31,40 @@ public class Main {
 
         String reversed = "";
 
-        // Reverse using for loop
         for (int i = input.length() - 1; i >= 0; i--) {
-            reversed = reversed + input.charAt(i);  // String concatenation
+            reversed = reversed + input.charAt(i);
         }
 
-        // Compare using equals()
         if (input.equals(reversed)) {
+            System.out.println(input + " is a Palindrome.");
+        } else {
+            System.out.println(input + " is NOT a Palindrome.");
+        }
+
+        System.out.println();
+    }
+
+    // ===== UC4: Character Array + Two Pointer =====
+    public static void checkUsingCharArray(String input) {
+
+        char[] characters = input.toCharArray(); // Convert to char[]
+
+        int start = 0;
+        int end = characters.length - 1;
+
+        boolean isPalindrome = true;
+
+        // Two-pointer comparison
+        while (start < end) {
+            if (characters[start] != characters[end]) {
+                isPalindrome = false;
+                break;
+            }
+            start++;
+            end--;
+        }
+
+        if (isPalindrome) {
             System.out.println(input + " is a Palindrome.");
         } else {
             System.out.println(input + " is NOT a Palindrome.");
@@ -49,9 +76,10 @@ public class Main {
     // ===== Main Method =====
     public static void main(String[] args) {
 
-        displayAppInfo();                 // UC1
-        checkHardcodedPalindrome();       // UC2
-        reverseAndCheck("racecar");       // UC3
+        displayAppInfo();                  // UC1
+        checkHardcodedPalindrome();        // UC2
+        reverseAndCheck("racecar");        // UC3
+        checkUsingCharArray("level");      // UC4
 
         System.out.println("Program Ended.");
     }
