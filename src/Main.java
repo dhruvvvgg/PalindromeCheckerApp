@@ -1,3 +1,5 @@
+import java.util.Stack;
+
 public class Main {
 
     // ===== UC1: Application Startup =====
@@ -47,14 +49,12 @@ public class Main {
     // ===== UC4: Character Array + Two Pointer =====
     public static void checkUsingCharArray(String input) {
 
-        char[] characters = input.toCharArray(); // Convert to char[]
+        char[] characters = input.toCharArray();
 
         int start = 0;
         int end = characters.length - 1;
-
         boolean isPalindrome = true;
 
-        // Two-pointer comparison
         while (start < end) {
             if (characters[start] != characters[end]) {
                 isPalindrome = false;
@@ -73,13 +73,43 @@ public class Main {
         System.out.println();
     }
 
+    // ===== UC5: Stack Based Palindrome Check =====
+    public static void checkUsingStack(String input) {
+
+        Stack<Character> stack = new Stack<>();
+
+        // Push characters into stack
+        for (int i = 0; i < input.length(); i++) {
+            stack.push(input.charAt(i));
+        }
+
+        boolean isPalindrome = true;
+
+        // Pop and compare
+        for (int i = 0; i < input.length(); i++) {
+            if (input.charAt(i) != stack.pop()) {
+                isPalindrome = false;
+                break;
+            }
+        }
+
+        if (isPalindrome) {
+            System.out.println(input + " is a Palindrome.");
+        } else {
+            System.out.println(input + " is NOT a Palindrome.");
+        }
+
+        System.out.println();
+    }
+
     // ===== Main Method =====
     public static void main(String[] args) {
 
-        displayAppInfo();                  // UC1
-        checkHardcodedPalindrome();        // UC2
-        reverseAndCheck("racecar");        // UC3
-        checkUsingCharArray("level");      // UC4
+        displayAppInfo();                   // UC1
+        checkHardcodedPalindrome();         // UC2
+        reverseAndCheck("racecar");         // UC3
+        checkUsingCharArray("level");       // UC4
+        checkUsingStack("radar");           // UC5
 
         System.out.println("Program Ended.");
     }
