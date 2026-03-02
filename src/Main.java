@@ -1,6 +1,8 @@
 import java.util.Stack;
 import java.util.Queue;
 import java.util.LinkedList;
+import java.util.Deque;
+import java.util.ArrayDeque;
 
 public class Main {
 
@@ -36,7 +38,7 @@ public class Main {
         String reversed = "";
 
         for (int i = input.length() - 1; i >= 0; i--) {
-            reversed = reversed + input.charAt(i);
+            reversed += input.charAt(i);
         }
 
         if (input.equals(reversed)) {
@@ -134,6 +136,36 @@ public class Main {
         System.out.println();
     }
 
+    // ===== UC7: Deque Based Palindrome Check =====
+    public static void checkUsingDeque(String input) {
+
+        Deque<Character> deque = new ArrayDeque<>();
+
+        for (int i = 0; i < input.length(); i++) {
+            deque.addLast(input.charAt(i)); // Insert at rear
+        }
+
+        boolean isPalindrome = true;
+
+        while (deque.size() > 1) {
+            char front = deque.removeFirst(); // Remove front
+            char rear = deque.removeLast();   // Remove rear
+
+            if (front != rear) {
+                isPalindrome = false;
+                break;
+            }
+        }
+
+        if (isPalindrome) {
+            System.out.println(input + " is a Palindrome.");
+        } else {
+            System.out.println(input + " is NOT a Palindrome.");
+        }
+
+        System.out.println();
+    }
+
     // ===== Main Method =====
     public static void main(String[] args) {
 
@@ -143,6 +175,7 @@ public class Main {
         checkUsingCharArray("level");       // UC4
         checkUsingStack("radar");           // UC5
         checkUsingQueueAndStack("madam");   // UC6
+        checkUsingDeque("civic");           // UC7
 
         System.out.println("Program Ended.");
     }
