@@ -57,7 +57,6 @@ public class Main {
     // ===== UC5 =====
     public static void checkUsingStack(String input) {
         Stack<Character> stack = new Stack<>();
-
         for (char c : input.toCharArray()) stack.push(c);
 
         boolean isPalindrome = true;
@@ -97,7 +96,6 @@ public class Main {
     // ===== UC7 =====
     public static void checkUsingDeque(String input) {
         Deque<Character> deque = new ArrayDeque<>();
-
         for (char c : input.toCharArray()) deque.addLast(c);
 
         boolean isPalindrome = true;
@@ -201,21 +199,16 @@ public class Main {
                 : " is NOT a Palindrome (ignoring spaces & case).\n"));
     }
 
-    // ===== UC11: Encapsulation =====
+    // ===== UC11 =====
     static class PalindromeChecker {
-
         public boolean checkPalindrome(String input) {
             String normalized = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
 
             Stack<Character> stack = new Stack<>();
-            for (char c : normalized.toCharArray()) {
-                stack.push(c);
-            }
+            for (char c : normalized.toCharArray()) stack.push(c);
 
             for (char c : normalized.toCharArray()) {
-                if (c != stack.pop()) {
-                    return false;
-                }
+                if (c != stack.pop()) return false;
             }
             return true;
         }
@@ -227,6 +220,59 @@ public class Main {
 
         System.out.println(input + (result ? " is a Palindrome (OOP Encapsulation).\n"
                 : " is NOT a Palindrome (OOP Encapsulation).\n"));
+    }
+
+    // ===== UC12: Strategy Pattern =====
+
+    interface PalindromeStrategy {
+        boolean isPalindrome(String input);
+    }
+
+    static class StackStrategy implements PalindromeStrategy {
+        public boolean isPalindrome(String input) {
+            Stack<Character> stack = new Stack<>();
+            for (char c : input.toCharArray()) stack.push(c);
+
+            for (char c : input.toCharArray()) {
+                if (c != stack.pop()) return false;
+            }
+            return true;
+        }
+    }
+
+    static class DequeStrategy implements PalindromeStrategy {
+        public boolean isPalindrome(String input) {
+            Deque<Character> deque = new ArrayDeque<>();
+            for (char c : input.toCharArray()) deque.addLast(c);
+
+            while (deque.size() > 1) {
+                if (deque.removeFirst() != deque.removeLast()) return false;
+            }
+            return true;
+        }
+    }
+
+    static class StrategyContext {
+        private PalindromeStrategy strategy;
+
+        public StrategyContext(PalindromeStrategy strategy) {
+            this.strategy = strategy;
+        }
+
+        public boolean execute(String input) {
+            return strategy.isPalindrome(input);
+        }
+    }
+
+    public static void useStrategy(String input) {
+        StrategyContext stackContext = new StrategyContext(new StackStrategy());
+        StrategyContext dequeContext = new StrategyContext(new DequeStrategy());
+
+        boolean stackResult = stackContext.execute(input);
+        boolean dequeResult = dequeContext.execute(input);
+
+        System.out.println(input + (stackResult ? " is Palindrome (Stack Strategy)" : " is NOT Palindrome (Stack Strategy)"));
+        System.out.println(input + (dequeResult ? " is Palindrome (Deque Strategy)\n" : " is NOT Palindrome (Deque Strategy)\n"));
     }
 
     // ===== MAIN =====
@@ -242,7 +288,8 @@ public class Main {
         checkUsingLinkedList("refer");
         checkUsingRecursion("deified");
         checkIgnoringSpacesAndCase("A man a plan a canal Panama");
-        useEncapsulatedChecker("No lemon no melon"); // UC11
+        useEncapsulatedChecker("No lemon no melon");
+        useStrategy("madam"); // UC12
 
         System.out.println("Program Ended.");
     }
