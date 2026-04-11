@@ -222,8 +222,7 @@ public class Main {
                 : " is NOT a Palindrome (OOP Encapsulation).\n"));
     }
 
-    // ===== UC12: Strategy Pattern =====
-
+    // ===== UC12 =====
     interface PalindromeStrategy {
         boolean isPalindrome(String input);
     }
@@ -268,11 +267,34 @@ public class Main {
         StrategyContext stackContext = new StrategyContext(new StackStrategy());
         StrategyContext dequeContext = new StrategyContext(new DequeStrategy());
 
-        boolean stackResult = stackContext.execute(input);
-        boolean dequeResult = dequeContext.execute(input);
+        System.out.println(input + (stackContext.execute(input) ? " is Palindrome (Stack Strategy)" : " is NOT Palindrome (Stack Strategy)"));
+        System.out.println(input + (dequeContext.execute(input) ? " is Palindrome (Deque Strategy)\n" : " is NOT Palindrome (Deque Strategy)\n"));
+    }
 
-        System.out.println(input + (stackResult ? " is Palindrome (Stack Strategy)" : " is NOT Palindrome (Stack Strategy)"));
-        System.out.println(input + (dequeResult ? " is Palindrome (Deque Strategy)\n" : " is NOT Palindrome (Deque Strategy)\n"));
+    // ===== UC13: Performance Comparison =====
+    public static void comparePerformance(String input) {
+
+        long start, end;
+
+        start = System.nanoTime();
+        checkUsingCharArray(input);
+        end = System.nanoTime();
+        System.out.println("CharArray Time: " + (end - start) + " ns\n");
+
+        start = System.nanoTime();
+        checkUsingStack(input);
+        end = System.nanoTime();
+        System.out.println("Stack Time: " + (end - start) + " ns\n");
+
+        start = System.nanoTime();
+        checkUsingDeque(input);
+        end = System.nanoTime();
+        System.out.println("Deque Time: " + (end - start) + " ns\n");
+
+        start = System.nanoTime();
+        checkUsingRecursion(input);
+        end = System.nanoTime();
+        System.out.println("Recursion Time: " + (end - start) + " ns\n");
     }
 
     // ===== MAIN =====
@@ -289,7 +311,8 @@ public class Main {
         checkUsingRecursion("deified");
         checkIgnoringSpacesAndCase("A man a plan a canal Panama");
         useEncapsulatedChecker("No lemon no melon");
-        useStrategy("madam"); // UC12
+        useStrategy("madam");
+        comparePerformance("racecar"); // UC13
 
         System.out.println("Program Ended.");
     }
