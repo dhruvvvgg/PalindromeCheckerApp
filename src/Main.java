@@ -34,7 +34,6 @@ public class Main {
 
     // ===== UC3: Reverse String and Compare =====
     public static void reverseAndCheck(String input) {
-
         String reversed = "";
 
         for (int i = input.length() - 1; i >= 0; i--) {
@@ -46,13 +45,11 @@ public class Main {
         } else {
             System.out.println(input + " is NOT a Palindrome.");
         }
-
         System.out.println();
     }
 
     // ===== UC4: Character Array + Two Pointer =====
     public static void checkUsingCharArray(String input) {
-
         char[] characters = input.toCharArray();
 
         int start = 0;
@@ -73,13 +70,11 @@ public class Main {
         } else {
             System.out.println(input + " is NOT a Palindrome.");
         }
-
         System.out.println();
     }
 
     // ===== UC5: Stack Based Palindrome Check =====
     public static void checkUsingStack(String input) {
-
         Stack<Character> stack = new Stack<>();
 
         for (int i = 0; i < input.length(); i++) {
@@ -100,28 +95,23 @@ public class Main {
         } else {
             System.out.println(input + " is NOT a Palindrome.");
         }
-
         System.out.println();
     }
 
-    // ===== UC6: Queue vs Stack (FIFO vs LIFO) =====
+    // ===== UC6: Queue vs Stack =====
     public static void checkUsingQueueAndStack(String input) {
-
         Queue<Character> queue = new LinkedList<>();
         Stack<Character> stack = new Stack<>();
 
         for (int i = 0; i < input.length(); i++) {
-            queue.add(input.charAt(i));   // Enqueue (FIFO)
-            stack.push(input.charAt(i)); // Push (LIFO)
+            queue.add(input.charAt(i));
+            stack.push(input.charAt(i));
         }
 
         boolean isPalindrome = true;
 
         while (!queue.isEmpty()) {
-            char fromQueue = queue.remove(); // Dequeue
-            char fromStack = stack.pop();    // Pop
-
-            if (fromQueue != fromStack) {
+            if (queue.remove() != stack.pop()) {
                 isPalindrome = false;
                 break;
             }
@@ -132,26 +122,21 @@ public class Main {
         } else {
             System.out.println(input + " is NOT a Palindrome.");
         }
-
         System.out.println();
     }
 
     // ===== UC7: Deque Based Palindrome Check =====
     public static void checkUsingDeque(String input) {
-
         Deque<Character> deque = new ArrayDeque<>();
 
         for (int i = 0; i < input.length(); i++) {
-            deque.addLast(input.charAt(i)); // Insert at rear
+            deque.addLast(input.charAt(i));
         }
 
         boolean isPalindrome = true;
 
         while (deque.size() > 1) {
-            char front = deque.removeFirst(); // Remove front
-            char rear = deque.removeLast();   // Remove rear
-
-            if (front != rear) {
+            if (deque.removeFirst() != deque.removeLast()) {
                 isPalindrome = false;
                 break;
             }
@@ -162,11 +147,83 @@ public class Main {
         } else {
             System.out.println(input + " is NOT a Palindrome.");
         }
-
         System.out.println();
     }
 
-    // ===== Main Method =====
+    // ===== UC8: Singly Linked List =====
+
+    static class Node {
+        char data;
+        Node next;
+
+        Node(char data) {
+            this.data = data;
+            this.next = null;
+        }
+    }
+
+    public static Node createLinkedList(String input) {
+        Node head = null, tail = null;
+
+        for (int i = 0; i < input.length(); i++) {
+            Node newNode = new Node(input.charAt(i));
+
+            if (head == null) {
+                head = tail = newNode;
+            } else {
+                tail.next = newNode;
+                tail = newNode;
+            }
+        }
+        return head;
+    }
+
+    public static Node reverseList(Node head) {
+        Node prev = null;
+        Node curr = head;
+
+        while (curr != null) {
+            Node next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+        return prev;
+    }
+
+    public static void checkUsingLinkedList(String input) {
+        Node head = createLinkedList(input);
+
+        Node slow = head, fast = head;
+
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        Node secondHalf = reverseList(slow);
+        Node firstHalf = head;
+
+        boolean isPalindrome = true;
+
+        while (secondHalf != null) {
+            if (firstHalf.data != secondHalf.data) {
+                isPalindrome = false;
+                break;
+            }
+            firstHalf = firstHalf.next;
+            secondHalf = secondHalf.next;
+        }
+
+        if (isPalindrome) {
+            System.out.println(input + " is a Palindrome.");
+        } else {
+            System.out.println(input + " is NOT a Palindrome.");
+        }
+        System.out.println();
+    }
+
+    // ===== Main =====
     public static void main(String[] args) {
 
         displayAppInfo();                   // UC1
@@ -176,6 +233,7 @@ public class Main {
         checkUsingStack("radar");           // UC5
         checkUsingQueueAndStack("madam");   // UC6
         checkUsingDeque("civic");           // UC7
+        checkUsingLinkedList("refer");      // UC8
 
         System.out.println("Program Ended.");
     }
