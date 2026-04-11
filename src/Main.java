@@ -201,19 +201,48 @@ public class Main {
                 : " is NOT a Palindrome (ignoring spaces & case).\n"));
     }
 
+    // ===== UC11: Encapsulation =====
+    static class PalindromeChecker {
+
+        public boolean checkPalindrome(String input) {
+            String normalized = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+
+            Stack<Character> stack = new Stack<>();
+            for (char c : normalized.toCharArray()) {
+                stack.push(c);
+            }
+
+            for (char c : normalized.toCharArray()) {
+                if (c != stack.pop()) {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+
+    public static void useEncapsulatedChecker(String input) {
+        PalindromeChecker checker = new PalindromeChecker();
+        boolean result = checker.checkPalindrome(input);
+
+        System.out.println(input + (result ? " is a Palindrome (OOP Encapsulation).\n"
+                : " is NOT a Palindrome (OOP Encapsulation).\n"));
+    }
+
     // ===== MAIN =====
     public static void main(String[] args) {
 
-        displayAppInfo();                   // UC1
-        checkHardcodedPalindrome();         // UC2
-        reverseAndCheck("racecar");         // UC3
-        checkUsingCharArray("level");       // UC4
-        checkUsingStack("radar");           // UC5
-        checkUsingQueueAndStack("madam");   // UC6
-        checkUsingDeque("civic");           // UC7
-        checkUsingLinkedList("refer");      // UC8
-        checkUsingRecursion("deified");     // UC9
-        checkIgnoringSpacesAndCase("A man a plan a canal Panama"); // UC10
+        displayAppInfo();
+        checkHardcodedPalindrome();
+        reverseAndCheck("racecar");
+        checkUsingCharArray("level");
+        checkUsingStack("radar");
+        checkUsingQueueAndStack("madam");
+        checkUsingDeque("civic");
+        checkUsingLinkedList("refer");
+        checkUsingRecursion("deified");
+        checkIgnoringSpacesAndCase("A man a plan a canal Panama");
+        useEncapsulatedChecker("No lemon no melon"); // UC11
 
         System.out.println("Program Ended.");
     }
