@@ -172,17 +172,33 @@ public class Main {
 
     // ===== UC9 =====
     public static boolean recursiveCheck(String input, int start, int end) {
-        if (start >= end) return true; // base case
-
+        if (start >= end) return true;
         if (input.charAt(start) != input.charAt(end)) return false;
-
         return recursiveCheck(input, start + 1, end - 1);
     }
 
     public static void checkUsingRecursion(String input) {
         boolean isPalindrome = recursiveCheck(input, 0, input.length() - 1);
-
         System.out.println(input + (isPalindrome ? " is a Palindrome.\n" : " is NOT a Palindrome.\n"));
+    }
+
+    // ===== UC10 =====
+    public static void checkIgnoringSpacesAndCase(String input) {
+        String normalized = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+
+        int start = 0, end = normalized.length() - 1;
+        boolean isPalindrome = true;
+
+        while (start < end) {
+            if (normalized.charAt(start) != normalized.charAt(end)) {
+                isPalindrome = false;
+                break;
+            }
+            start++; end--;
+        }
+
+        System.out.println(input + (isPalindrome ? " is a Palindrome (ignoring spaces & case).\n"
+                : " is NOT a Palindrome (ignoring spaces & case).\n"));
     }
 
     // ===== MAIN =====
@@ -197,6 +213,7 @@ public class Main {
         checkUsingDeque("civic");           // UC7
         checkUsingLinkedList("refer");      // UC8
         checkUsingRecursion("deified");     // UC9
+        checkIgnoringSpacesAndCase("A man a plan a canal Panama"); // UC10
 
         System.out.println("Program Ended.");
     }
